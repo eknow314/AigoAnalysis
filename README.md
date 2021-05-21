@@ -19,7 +19,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.eknow314:AigoAnalysis:1.0.3'
+    implementation 'com.github.eknow314:AigoAnalysis:1.0.4'
 }
 ```
 
@@ -48,4 +48,6 @@ public void onPause() {
 ```
 
 - 上报策略：这里会自动上报 activity 的停留时间，上报策略实时上报，在 WorkManage 里面执行即时上报
+
+sample 里面有集成了友盟海外版的sdk
 

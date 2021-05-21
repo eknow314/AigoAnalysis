@@ -52,6 +52,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(':AigoAnalysisLib')
+//    implementation 'com.github.eknow314:AigoAnalysis:1.0.4'
 
     implementation 'android.arch.work:work-runtime:1.0.1'
 
