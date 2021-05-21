@@ -2,17 +2,9 @@ package com.aigo.analysis.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.aigo.analysis.TrackerHelper;
-import com.aigo.analysis.event.GetInitDataEvent;
-import com.github.gzuliyujiang.oaid.DeviceID;
-import com.github.gzuliyujiang.oaid.IGetter;
-import com.github.gzuliyujiang.oaid.OAIDLog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,28 +15,28 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn1 = findViewById(R.id.btn_1);
         btn1.setOnClickListener(v -> {
-            DeviceID.getOAID(MainActivity.this, new IGetter() {
-                @Override
-                public void onOAIDGetComplete(@NonNull String result) {
-                    btn1.setText("OAID：\n" + result);
-                }
-
-                @Override
-                public void onOAIDGetError(@NonNull Throwable error) {
-                    String DeviceId = DeviceID.getWidevineID();
-                    if (!TextUtils.isEmpty(DeviceId)) {
-                        btn1.setText("WidevineID：\n" + DeviceId);
-                        return;
-                    }
-                    DeviceId = DeviceID.getAndroidID(MainActivity.this);
-                    if (!TextUtils.isEmpty(DeviceId)) {
-                        btn1.setText("AndroidID：\n" + DeviceId);
-                        return;
-                    }
-                    DeviceId = DeviceID.getGUID(MainActivity.this);
-                    btn1.setText("GUID：\n" + DeviceId);
-                }
-            });
+//            DeviceID.getOAID(MainActivity.this, new IGetter() {
+//                @Override
+//                public void onOAIDGetComplete(@NonNull String result) {
+//                    btn1.setText("OAID：\n" + result);
+//                }
+//
+//                @Override
+//                public void onOAIDGetError(@NonNull Throwable error) {
+//                    String DeviceId = DeviceID.getWidevineID();
+//                    if (!TextUtils.isEmpty(DeviceId)) {
+//                        btn1.setText("WidevineID：\n" + DeviceId);
+//                        return;
+//                    }
+//                    DeviceId = DeviceID.getAndroidID(MainActivity.this);
+//                    if (!TextUtils.isEmpty(DeviceId)) {
+//                        btn1.setText("AndroidID：\n" + DeviceId);
+//                        return;
+//                    }
+//                    DeviceId = DeviceID.getGUID(MainActivity.this);
+//                    btn1.setText("GUID：\n" + DeviceId);
+//                }
+//            });
 //
 //            TrackerHelper.getInstance().with(new GetInitDataEvent());
 //            TrackerHelper.getInstance().with(new UserLoginEvent("photo", "nickName", "account", "13800000000"));

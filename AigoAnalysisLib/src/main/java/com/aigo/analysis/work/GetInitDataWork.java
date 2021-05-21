@@ -7,13 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.aigo.analysis.Tracker;
+import com.aigo.analysis.BaseParams;
 import com.aigo.analysis.TrackerHelper;
 import com.aigo.analysis.dispatcher.DefaultPacketSender;
 import com.aigo.analysis.dispatcher.Packet;
-import com.aigo.analysis.BaseParams;
-import com.github.gzuliyujiang.oaid.DeviceID;
-import com.github.gzuliyujiang.oaid.IGetter;
+import com.aigo.analysis.tools.DeviceIdUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,29 +42,31 @@ public class GetInitDataWork extends Worker {
 
         if (TextUtils.isEmpty(mDeviceId)) {
             //如果本地存储不存在，先去取Android手机设备唯一标识
-            DeviceID.getOAID(getApplicationContext(), new IGetter() {
-                @Override
-                public void onOAIDGetComplete(@NonNull String result) {
-                    mDeviceId = result;
-                    getClientAutoId();
-                }
-
-                @Override
-                public void onOAIDGetError(@NonNull Throwable error) {
-                    mDeviceId = DeviceID.getWidevineID();
-                    if (!TextUtils.isEmpty(mDeviceId)) {
-                        getClientAutoId();
-                        return;
-                    }
-                    mDeviceId = DeviceID.getAndroidID(getApplicationContext());
-                    if (!TextUtils.isEmpty(mDeviceId)) {
-                        getClientAutoId();
-                        return;
-                    }
-                    mDeviceId = DeviceID.getGUID(getApplicationContext());
-                    getClientAutoId();
-                }
-            });
+            mDeviceId = DeviceIdUtil.getDeviceId(getApplicationContext());
+            getClientAutoId();
+//            DeviceID.getOAID(getApplicationContext(), new IGetter() {
+//                @Override
+//                public void onOAIDGetComplete(@NonNull String result) {
+//                    mDeviceId = result;
+//                    getClientAutoId();
+//                }
+//
+//                @Override
+//                public void onOAIDGetError(@NonNull Throwable error) {
+//                    mDeviceId = DeviceID.getWidevineID();
+//                    if (!TextUtils.isEmpty(mDeviceId)) {
+//                        getClientAutoId();
+//                        return;
+//                    }
+//                    mDeviceId = DeviceID.getAndroidID(getApplicationContext());
+//                    if (!TextUtils.isEmpty(mDeviceId)) {
+//                        getClientAutoId();
+//                        return;
+//                    }
+//                    mDeviceId = DeviceID.getGUID(getApplicationContext());
+//                    getClientAutoId();
+//                }
+//            });
         } else if (mClientAutoId == 0) {
             //如果本地存储的数据分析系统的客户端id为0，再次获取
             getClientAutoId();
