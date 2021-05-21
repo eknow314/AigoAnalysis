@@ -1,3 +1,3 @@
-include ':AigoAnalysis'
+include ':AigoAnalysisLib'
 include ':Sample'
 rootProject.name = "AigoAnalysis"
