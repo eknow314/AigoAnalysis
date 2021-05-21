@@ -19,7 +19,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:Android_CN_OAID:4.1.2'
+    implementation 'com.github.eknow314:AigoAnalysis:1.0.3'
 }
 ```
 
