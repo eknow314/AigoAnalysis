@@ -2,12 +2,15 @@ package com.aigo.analysis.event;
 
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkRequest;
 
 import com.aigo.analysis.AigoAnalysis;
 import com.aigo.analysis.Tracker;
 import com.aigo.analysis.work.PageWork;
-import com.aigo.analysis.work.UserLoginWork;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
+import java.util.Date;
 
 /**
  * @Description: 页面打点上报，页面名称和停留时间
@@ -21,10 +24,9 @@ public class PageEvent extends BaseEvent implements IWorkRequestEvent {
     private long seconds;
 
     /**
-     *
-     * @param pageName activity/fragment的完整名称
+     * @param pageName     activity/fragment的完整名称
      * @param backPageName 上级页面名称
-     * @param seconds 页面停留秒数
+     * @param seconds      页面停留秒数
      */
     public PageEvent(String pageName, String backPageName, long seconds) {
         this.pageName = pageName;
@@ -34,8 +36,14 @@ public class PageEvent extends BaseEvent implements IWorkRequestEvent {
 
     @Override
     public OneTimeWorkRequest send(Tracker tracker) {
+        DateTime nowUTC = new DateTime(DateTimeZone.UTC);
+        DateTime nowLocal = nowUTC.withZone(DateTimeZone.getDefault());
+        Date dLocal = nowLocal.toLocalDateTime().toDate();
+        Date dUTC = nowUTC.toLocalDateTime().toDate();
+
         Data data = commonData(tracker)
-                .putLong("time", System.currentTimeMillis())
+                .putLong("time", dUTC.getTime())
+                .putLong("local_time", dLocal.getTime())
                 .putInt("type", 0)
                 .putInt("tag_id", 0)
                 .putLong("seconds", seconds)
