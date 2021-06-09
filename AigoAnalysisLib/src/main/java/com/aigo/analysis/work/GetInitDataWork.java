@@ -11,14 +11,11 @@ import com.aigo.analysis.BaseParams;
 import com.aigo.analysis.TrackerHelper;
 import com.aigo.analysis.dispatcher.DefaultPacketSender;
 import com.aigo.analysis.dispatcher.Packet;
+import com.aigo.analysis.tools.DateUtil;
 import com.aigo.analysis.tools.DeviceIdUtil;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 import timber.log.Timber;
 
@@ -32,15 +29,9 @@ public class GetInitDataWork extends Worker {
     private String mDeviceId = "";
     private int mUserId;
     private int mClientAutoId;
-    private Date dLocal;
-    private Date dUTC;
 
     public GetInitDataWork(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        DateTime nowUTC = new DateTime(DateTimeZone.UTC);
-        DateTime nowLocal = nowUTC.withZone(DateTimeZone.getDefault());
-        dLocal = nowLocal.toLocalDateTime().toDate();
-        dUTC = nowUTC.toLocalDateTime().toDate();
     }
 
     @NonNull
@@ -98,8 +89,8 @@ public class GetInitDataWork extends Worker {
                 .append("&Country=").append(getInputData().getString(BaseParams.COUNTRY.toString()))
                 .append("&Device=").append(getInputData().getString(BaseParams.DEVICE_MODEL.toString()))
                 .append("&OS=").append(getInputData().getString(BaseParams.SYSTEM_VERSION.toString()))
-                .append("&Time=").append(dUTC.getTime())
-                .append("&LocalTime=").append(dLocal.getTime())
+                .append("&Time=").append(System.currentTimeMillis())
+                .append("&LocalTime=").append(DateUtil.getLocalUnixTimestamp())
                 .append("&Platform=").append(TrackerHelper.PLATFORM);
         if (mUserId != 0) {
             url.append("&UserId=").append(mUserId);
@@ -133,8 +124,8 @@ public class GetInitDataWork extends Worker {
         try {
             postData.put("device", getInputData().getString(BaseParams.DEVICE_MODEL.toString()));
             postData.put("os", getInputData().getString(BaseParams.SYSTEM_VERSION.toString()));
-            postData.put("time", dUTC.getTime());
-            postData.put("local_time", dLocal.getTime());
+            postData.put("time", System.currentTimeMillis());
+            postData.put("local_time", DateUtil.getLocalUnixTimestamp());
         } catch (JSONException e) {
             e.printStackTrace();
         }

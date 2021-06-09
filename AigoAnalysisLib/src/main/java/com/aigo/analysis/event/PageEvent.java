@@ -5,12 +5,8 @@ import androidx.work.OneTimeWorkRequest;
 
 import com.aigo.analysis.AigoAnalysis;
 import com.aigo.analysis.Tracker;
+import com.aigo.analysis.tools.DateUtil;
 import com.aigo.analysis.work.PageWork;
-
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
-import java.util.Date;
 
 /**
  * @Description: 页面打点上报，页面名称和停留时间
@@ -36,14 +32,9 @@ public class PageEvent extends BaseEvent implements IWorkRequestEvent {
 
     @Override
     public OneTimeWorkRequest send(Tracker tracker) {
-        DateTime nowUTC = new DateTime(DateTimeZone.UTC);
-        DateTime nowLocal = nowUTC.withZone(DateTimeZone.getDefault());
-        Date dLocal = nowLocal.toLocalDateTime().toDate();
-        Date dUTC = nowUTC.toLocalDateTime().toDate();
-
         Data data = commonData(tracker)
-                .putLong("time", dUTC.getTime())
-                .putLong("local_time", dLocal.getTime())
+                .putLong("time", System.currentTimeMillis())
+                .putLong("local_time", DateUtil.getLocalUnixTimestamp())
                 .putInt("type", 0)
                 .putInt("tag_id", 0)
                 .putLong("seconds", seconds)
