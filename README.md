@@ -19,7 +19,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.eknow314:AigoAnalysis:1.0.7'
+    implementation 'com.github.eknow314:AigoAnalysis:1.0.8'
 }
 ```
 
@@ -28,7 +28,7 @@ dependencies {
 - 初始化：在 Application 的 onCreate() 进行初始化
 
 ```text
-TrackerHelper.getInstance().init(this, "https://test.smartapi.aigostar.com:3443/analytics/", true);
+TrackerHelper.getInstance().init(this, "https://test.smartapi.aigostar.com:3443/analytics/", BuildConfig.DEBUG);
         
 ```
 
