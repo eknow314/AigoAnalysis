@@ -19,7 +19,8 @@ public class BaseEvent {
                 .putInt(BaseParams.CLIENT_AUTO_ID.toString(), Integer.parseInt(tracker.getDefaultTrackMe().get(BaseParams.CLIENT_AUTO_ID)))
                 .putString(BaseParams.APP_VERSION.toString(), tracker.getDefaultTrackMe().get(BaseParams.APP_VERSION))
                 .putString(BaseParams.COUNTRY.toString(), tracker.getDefaultTrackMe().get(BaseParams.COUNTRY))
-                .putInt(BaseParams.PLATFORM.toString(), TrackerHelper.PLATFORM)
+                .putInt(BaseParams.PLATFORM.toString(), tracker.getSiteId())
+                .putInt(BaseParams.DATA_VERSION.toString(), Integer.parseInt(tracker.getDefaultTrackMe().get(BaseParams.DATA_VERSION)))
                 .putInt(BaseParams.USER_ID.toString(), Integer.parseInt(tracker.getDefaultTrackMe().get(BaseParams.USER_ID)));
     }
 }

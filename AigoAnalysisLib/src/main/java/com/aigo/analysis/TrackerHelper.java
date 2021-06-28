@@ -32,7 +32,7 @@ public class TrackerHelper {
 
     private Context mContext;
     private String apiUrl;
-    private int siteId;
+    private Integer siteId;
     private boolean isInit = false;
 
     /**
@@ -51,13 +51,17 @@ public class TrackerHelper {
         return mInstance;
     }
 
-    public void init(Context context, String apiUrl, boolean showLog) {
+    public void init(Context context, String apiUrl, Integer siteId, boolean showLog) {
         this.mContext = context;
         this.apiUrl = apiUrl;
-//        this.siteId = siteId;
+        this.siteId = siteId;
         showLog(showLog);
         TrackerLifecycle.with((Application) context);
         isInit = true;
+    }
+
+    public void init(Context context, String apiUrl, boolean showLog) {
+        init(context, apiUrl, 1, showLog);
     }
 
     public synchronized Tracker getTracker() {

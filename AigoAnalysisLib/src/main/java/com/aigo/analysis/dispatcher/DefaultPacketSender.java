@@ -44,6 +44,7 @@ public class DefaultPacketSender {
     private static void getRequest(Packet packet, DefaultPacketSender.OnRequestCallBack callBack) {
         boolean isSuccess = false;
         String message = "";
+        int statusCode = -1;
 
         HttpURLConnection connection = null;
         InputStream inputStream = null;
@@ -77,7 +78,7 @@ public class DefaultPacketSender {
             connection.setUseCaches(false);
             connection.connect();//
 
-            int statusCode = connection.getResponseCode();
+            statusCode = connection.getResponseCode();
             Timber.tag(TAG).v("Transmission finished (code=%d).", statusCode);
             isSuccess = checkResponseCode(statusCode);
             if (isSuccess) {
@@ -111,7 +112,7 @@ public class DefaultPacketSender {
                     }
                 }
                 Timber.tag(TAG).w("Transmission failed (code=%d, reason=%s)", statusCode, errorReason.toString());
-                message = "Error code:" + statusCode;
+                message = errorReason.toString();
             }
         } catch (MalformedURLException e) {
             message = e.getMessage();
@@ -139,7 +140,7 @@ public class DefaultPacketSender {
             if (isSuccess) {
                 callBack.onSuccess(message);
             } else {
-                callBack.onError(message);
+                callBack.onError(statusCode, message);
             }
         }
     }
@@ -147,6 +148,7 @@ public class DefaultPacketSender {
     private static void postRequest(Packet packet, DefaultPacketSender.OnRequestCallBack callBack) {
         boolean isSuccess = false;
         String message = "";
+        int statusCode = -1;
 
         HttpURLConnection connection = null;
         InputStream inputStream = null;
@@ -185,7 +187,7 @@ public class DefaultPacketSender {
             out.flush();
             connection.connect();
 
-            int statusCode = connection.getResponseCode();
+            statusCode = connection.getResponseCode();
             Timber.tag(TAG).v("Transmission finished (code=%d).", statusCode);
             isSuccess = checkResponseCode(statusCode);
             if (isSuccess) {
@@ -220,7 +222,7 @@ public class DefaultPacketSender {
                     }
                 }
                 Timber.tag(TAG).w("Transmission failed (code=%d, reason=%s)", statusCode, errorReason.toString());
-                message = "Error code:" + statusCode;
+                message = errorReason.toString();
             }
 
         } catch (MalformedURLException e) {
@@ -249,7 +251,7 @@ public class DefaultPacketSender {
             if (isSuccess) {
                 callBack.onSuccess(message);
             } else {
-                callBack.onError(message);
+                callBack.onError(statusCode, message);
             }
         }
     }
@@ -260,6 +262,6 @@ public class DefaultPacketSender {
 
     public interface OnRequestCallBack {
         void onSuccess(String json);
-        void onError(String errorMsg);
+        void onError(int errorCode, String errorMsg);
     }
 }

@@ -30,6 +30,11 @@ public class Tracker {
     protected static final String PREF_KEY_TRACKER_CLIENT_AUTO_ID = "tracker.clientautoid";
 
     /**
+     * 设备注册到后台后拿到的数据版本，获取到存储到 sp
+     */
+    protected static final String PREF_KEY_TRACKER_DATA_VERSION = "tracker.dataversion";
+
+    /**
      * 校验url合法性
      */
     private static final Pattern VALID_URLS = Pattern.compile("^(\\w+)(?:://)(.+?)$");
@@ -45,7 +50,7 @@ public class Tracker {
     private final String mApiUrl;
 
     /**
-     * 数据上报站点id，当前项目没这个概念，预留
+     * 数据上报站点id，对应平台: 1.安卓 2.苹果 3.H5 4.PAD
      */
     private final int mSiteId;
 
@@ -78,6 +83,7 @@ public class Tracker {
         mDefaultTrackMe.set(BaseParams.DEVICE_ID, getPreferences().getString(PREF_KEY_TRACKER_DEVICE_ID, ""));
         mDefaultTrackMe.set(BaseParams.USER_ID, getPreferences().getInt(PREF_KEY_TRACKER_USER_ID, 0));
         mDefaultTrackMe.set(BaseParams.CLIENT_AUTO_ID, getPreferences().getInt(PREF_KEY_TRACKER_CLIENT_AUTO_ID, 0));
+        mDefaultTrackMe.set(BaseParams.DATA_VERSION, getPreferences().getInt(PREF_KEY_TRACKER_DATA_VERSION, 0));
         //赋值手机系统的数据
         mDefaultTrackMe.set(BaseParams.APP_VERSION, mAigoAnalysis.getDeviceHelper().getUserVersionName());
         mDefaultTrackMe.set(BaseParams.DEVICE_MODEL, mAigoAnalysis.getDeviceHelper().getAndroidDeviceModel());
@@ -105,7 +111,7 @@ public class Tracker {
         return mDefaultApplicationBaseUrl;
     }
 
-    public void saveInitialParams(String deviceId, int userId, int clientAutoId) {
+    public void saveInitialParams(String deviceId, int userId, int clientAutoId, int dataVersion) {
         synchronized (getPreferences()) {
             getPreferences().edit().putString(PREF_KEY_TRACKER_DEVICE_ID, deviceId).apply();
             mDefaultTrackMe.set(BaseParams.DEVICE_ID, deviceId);
@@ -117,6 +123,10 @@ public class Tracker {
         synchronized (getPreferences()) {
             getPreferences().edit().putInt(PREF_KEY_TRACKER_CLIENT_AUTO_ID, clientAutoId).apply();
             mDefaultTrackMe.set(BaseParams.CLIENT_AUTO_ID, clientAutoId);
+        }
+        synchronized (getPreferences()) {
+            getPreferences().edit().putInt(PREF_KEY_TRACKER_DATA_VERSION, clientAutoId).apply();
+            mDefaultTrackMe.set(BaseParams.DATA_VERSION, clientAutoId);
         }
     }
 

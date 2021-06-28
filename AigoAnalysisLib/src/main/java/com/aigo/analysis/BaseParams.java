@@ -48,6 +48,11 @@ public enum BaseParams {
     PLATFORM("platform"),
 
     /**
+     * 数据版本，设备从服务端获取到的数据版本标识，每次上报都要传
+     */
+    DATA_VERSION("data_version"),
+
+    /**
      * 用户 id
      */
     USER_ID("user_id");

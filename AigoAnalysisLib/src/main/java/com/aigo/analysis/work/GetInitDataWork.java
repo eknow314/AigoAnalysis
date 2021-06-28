@@ -29,6 +29,7 @@ public class GetInitDataWork extends Worker {
     private String mDeviceId = "";
     private int mUserId;
     private int mClientAutoId;
+    private int mDataVersion;
 
     public GetInitDataWork(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -91,26 +92,27 @@ public class GetInitDataWork extends Worker {
                 .append("&OS=").append(getInputData().getString(BaseParams.SYSTEM_VERSION.toString()))
                 .append("&Time=").append(System.currentTimeMillis())
                 .append("&LocalTime=").append(DateUtil.getLocalUnixTimestamp())
-                .append("&Platform=").append(TrackerHelper.PLATFORM);
+                .append("&Platform=").append(getInputData().getInt(BaseParams.PLATFORM.toString(), TrackerHelper.PLATFORM));
         if (mUserId != 0) {
             url.append("&UserId=").append(mUserId);
         }
         DefaultPacketSender.get(new Packet(url.toString()), new DefaultPacketSender.OnRequestCallBack() {
             @Override
             public void onSuccess(String json) {
-                //将注册成功获取到的设备 clientAutoId 存储起来
+                //将注册成功获取到的设备 clientAutoId, dataVersion 存储起来
                 try {
                     Timber.d(json);
                     JSONObject data = new JSONObject(json);
                     mClientAutoId = data.getInt("client_auto_id");
+                    mDataVersion = data.getInt("data_version");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                TrackerHelper.getInstance().getTracker().saveInitialParams(mDeviceId, mUserId, mClientAutoId);
+                TrackerHelper.getInstance().getTracker().saveInitialParams(mDeviceId, mUserId, mClientAutoId, mDataVersion);
             }
 
             @Override
-            public void onError(String errorMsg) {
+            public void onError(int errorCode, String errorMsg) {
 
             }
         });
@@ -131,7 +133,28 @@ public class GetInitDataWork extends Worker {
         }
         Packet packet = new Packet(getInputData().getString(BaseParams.TARGET_API_URL.toString())
                 + "v1.0/clients", postData, 1);
-        DefaultPacketSender.post(packet, null);
+        DefaultPacketSender.post(packet, new DefaultPacketSender.OnRequestCallBack() {
+            @Override
+            public void onSuccess(String json) {
+
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                if (errorCode == 400 && !TextUtils.isEmpty(errorMsg)) {
+                    try {
+                        JSONObject data = new JSONObject(errorMsg);
+                        String err = data.getString("code");
+                        String msg = data.getString("message");
+                        if (err.equals("CUSTOM_FAIL") && msg.equals("dataVersion changed")) {
+                            getClientAutoId();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
 }
