@@ -125,8 +125,8 @@ public class Tracker {
             mDefaultTrackMe.set(BaseParams.CLIENT_AUTO_ID, clientAutoId);
         }
         synchronized (getPreferences()) {
-            getPreferences().edit().putInt(PREF_KEY_TRACKER_DATA_VERSION, clientAutoId).apply();
-            mDefaultTrackMe.set(BaseParams.DATA_VERSION, clientAutoId);
+            getPreferences().edit().putInt(PREF_KEY_TRACKER_DATA_VERSION, dataVersion).apply();
+            mDefaultTrackMe.set(BaseParams.DATA_VERSION, dataVersion);
         }
     }
 

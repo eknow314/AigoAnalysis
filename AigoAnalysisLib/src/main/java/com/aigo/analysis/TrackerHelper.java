@@ -82,6 +82,10 @@ public class TrackerHelper {
         return isInit;
     }
 
+    public void setInit(boolean init) {
+        isInit = init;
+    }
+
     /**
      * 单次调用一个事件
      * @param event

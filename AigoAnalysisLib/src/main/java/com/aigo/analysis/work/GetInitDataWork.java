@@ -41,6 +41,7 @@ public class GetInitDataWork extends Worker {
         mDeviceId = getInputData().getString(BaseParams.DEVICE_ID.toString());
         mUserId = getInputData().getInt(BaseParams.USER_ID.toString(), 0);
         mClientAutoId = getInputData().getInt(BaseParams.CLIENT_AUTO_ID.toString(), 0);
+        mDataVersion = getInputData().getInt(BaseParams.DATA_VERSION.toString(), 0);
 
         if (TextUtils.isEmpty(mDeviceId)) {
             //如果本地存储不存在，先去取Android手机设备唯一标识
@@ -69,7 +70,7 @@ public class GetInitDataWork extends Worker {
 //                    getClientAutoId();
 //                }
 //            });
-        } else if (mClientAutoId == 0) {
+        } else if (mClientAutoId == 0 || mDataVersion == 0) {
             //如果本地存储的数据分析系统的客户端id为0，再次获取
             getClientAutoId();
         } else {
@@ -113,7 +114,8 @@ public class GetInitDataWork extends Worker {
 
             @Override
             public void onError(int errorCode, String errorMsg) {
-
+                //初始化失败，停止上报
+                TrackerHelper.getInstance().setInit(false);
             }
         });
     }

@@ -32,6 +32,7 @@ public class TrackMe {
         if (value == null) {
             mQueryParams.remove(key);
         } else if (value.length() > 0) {
+            mQueryParams.remove(key);
             mQueryParams.put(key, value);
         }
         return this;

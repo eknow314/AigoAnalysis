@@ -19,7 +19,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.eknow314:AigoAnalysis:1.0.9'
+    implementation 'com.github.eknow314:AigoAnalysis:1.0.10'
 }
 ```
 
