@@ -62,7 +62,7 @@ public class TrackerLifecycle implements Application.ActivityLifecycleCallbacks 
         // TODO: 2021/5/18 页面打点 结束 开始上报
         ++paused;
         long stopTime = (System.currentTimeMillis() - pageStartTime) / 1000;
-        if (stopTime > 0) {
+        if (stopTime > 0 && pageStartTime > 0) {
             TrackerHelper.getInstance().with(new PageEvent(activity.getComponentName().getClassName(),
                     backPageName,
                     stopTime));

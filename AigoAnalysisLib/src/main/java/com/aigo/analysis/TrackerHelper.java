@@ -120,9 +120,9 @@ public class TrackerHelper {
      * @param pageName
      */
     public static void onFragmentStart(String pageName) {
-        synchronized (TrackerHelper.class) {
-            PAGE_NAME_MAP.put(pageName, System.currentTimeMillis());
-        }
+//        synchronized (TrackerHelper.class) {
+//            PAGE_NAME_MAP.put(pageName, System.currentTimeMillis());
+//        }
     }
 
     /**
@@ -130,18 +130,17 @@ public class TrackerHelper {
      * @param pageName
      */
     public static void onFragmentEnd(String pageName) {
-        synchronized (TrackerHelper.class) {
-            long startTime = 0;
-            if (PAGE_NAME_MAP.containsKey(pageName)) {
-                startTime = PAGE_NAME_MAP.get(pageName);
-            }
-            long stopTime = (System.currentTimeMillis() - startTime) / 1000;
-            if (stopTime > 0) {
-                TrackerHelper.getInstance().with(new PageEvent(pageName,
-                        "This is a fragment",
-                        stopTime));
-            }
-            PAGE_NAME_MAP.remove(pageName);
-        }
+//        synchronized (TrackerHelper.class) {
+//            long startTime = 0;
+//            if (PAGE_NAME_MAP.containsKey(pageName)) {
+//                startTime = PAGE_NAME_MAP.get(pageName);
+//            }
+//            long stopTime = (System.currentTimeMillis() - startTime) / 1000;
+//            if (stopTime > 0 && startTime > 0) {
+//                TrackerHelper.getInstance().with(new PageEvent(pageName,
+//                        "This is a fragment",
+//                        stopTime));
+//            }
+//        }
     }
 }

@@ -61,11 +61,11 @@ public class DefaultPacketSender {
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setReadTimeout(READ_TIMEOUT);
             // User-Agent  IE9的标识
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0;");
-            connection.setRequestProperty("Accept-Language", "zh-CN");
-            connection.setRequestProperty("Connection", "Keep-Alive");
-            connection.setRequestProperty("Charset", "UTF-8");
+//            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0;");
+//            connection.setRequestProperty("Accept-Language", "zh-CN");
+//            connection.setRequestProperty("Connection", "Keep-Alive");
             connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("charset", "utf-8");
             /*
              * 当我们要获取我们请求的http地址访问的数据时就是使用connection.getInputStream().read()方式时我们就需要setDoInput(true)，
              * 根据api文档我们可知doInput默认就是为true。我们可以不用手动设置了，如果不需要读取输入流的话那就setDoInput(false)。
@@ -164,11 +164,11 @@ public class DefaultPacketSender {
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setReadTimeout(READ_TIMEOUT);
             // User-Agent  IE9的标识
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0;");
-            connection.setRequestProperty("Accept-Language", "zh-CN");
-            connection.setRequestProperty("Connection", "Keep-Alive");
-            connection.setRequestProperty("Charset", "UTF-8");
+//            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0;");
+//            connection.setRequestProperty("Accept-Language", "zh-CN");
+//            connection.setRequestProperty("Connection", "Keep-Alive");
             connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("charset", "utf-8");
             /*
              * 当我们要获取我们请求的http地址访问的数据时就是使用connection.getInputStream().read()方式时我们就需要setDoInput(true)，
              * 根据api文档我们可知doInput默认就是为true。我们可以不用手动设置了，如果不需要读取输入流的话那就setDoInput(false)。

@@ -19,7 +19,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.eknow314:AigoAnalysis:1.0.10'
+    implementation 'com.github.eknow314:AigoAnalysis:1.0.11'
 }
 ```
 
@@ -47,7 +47,17 @@ public void onPause() {
         
 ```
 
+- 自定义事件上报
+
+```text
+TrackerHelper.getInstance().with(new CustomEvent("AD_CLICK", "")
+                    //拓展参数，可不传
+                    .setExtension("key1", "value1")
+                    .setExtension("key2", "value2")
+                    .setExtension("key3", "value3"));
+        
+```
+
 - 上报策略：这里会自动上报 activity 的停留时间，上报策略实时上报，在 WorkManage 里面执行即时上报
 
-sample 里面有集成了友盟海外版的sdk
 
