@@ -19,7 +19,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.eknow314:AigoAnalysis:1.0.11'
+    implementation 'com.github.eknow314:AigoAnalysis:1.0.12'
 }
 ```
 
@@ -50,7 +50,7 @@ public void onPause() {
 - 自定义事件上报
 
 ```text
-TrackerHelper.getInstance().with(new CustomEvent("AD_CLICK", "")
+TrackerHelper.getInstance().with(new CustomEvent("一级事件", "二级事件")
                     //拓展参数，可不传
                     .setExtension("key1", "value1")
                     .setExtension("key2", "value2")
