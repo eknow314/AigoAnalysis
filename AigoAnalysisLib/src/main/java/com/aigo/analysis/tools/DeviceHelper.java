@@ -14,8 +14,6 @@ import com.aigo.analysis.AigoAnalysis;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
-import timber.log.Timber;
-
 /**
  * @Description:
  * @author: Eknow

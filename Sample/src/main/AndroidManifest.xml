@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".ThisApp"
@@ -14,9 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AigoAnalysis">
+        <activity android:name=".file.FileTestActivity"></activity>
+        <activity
+            android:name=".FullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen"
+            android:theme="@style/Theme.AigoAnalysis.Fullscreen" />
         <activity
             android:name=".NavTestActivity"
-            android:label="@string/title_activity_nav_test"></activity>
+            android:label="@string/title_activity_nav_test" />
         <activity android:name=".BlankActivity2" />
         <activity android:name=".BlankActivity" />
         <activity android:name=".MainActivity">

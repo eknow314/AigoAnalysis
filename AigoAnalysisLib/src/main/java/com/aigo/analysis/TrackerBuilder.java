@@ -16,7 +16,7 @@ public class TrackerBuilder {
     private String mApiUrl;
 
     /**
-     * 上报站点id，由后端设置的值，例如：移动端-1，H5-2
+     * 上报站点id，由后端设置的值
      */
     private int mSiteId;
 

@@ -19,7 +19,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.eknow314:AigoAnalysis:1.0.12'
+    implementation 'com.github.eknow314:AigoAnalysis:+'
 }
 ```
 
@@ -28,8 +28,32 @@ dependencies {
 - 初始化：在 Application 的 onCreate() 进行初始化
 
 ```text
-TrackerHelper.getInstance().init(this, "https://", BuildConfig.DEBUG);
+AigoAnalysisHelper.getInstance()
+                //配置目标地址和站点，安卓客户端填 1
+                .config(this, "https://test.smartapi.aigostar.com:3443/analytics/", 1)
+                //是否打印日志
+                .showLog(BuildConfig.DEBUG)
+                //自动上报 activity
+                .autoActivityPage()
+                //初始化，调用服务端逻辑
+                .init();
         
+```
+
+- 低内存优化处理
+
+```text
+@Override
+public void onLowMemory() {
+    super.onLowMemory();
+    AigoAnalysisHelper.getInstance().getTracker().onLowMemory();
+}
+
+@Override
+public void onTrimMemory(int level) {
+    super.onTrimMemory(level);
+    AigoAnalysisHelper.getInstance().getTracker().onTrimMemory(level);
+}
 ```
 
 - 如果要 fragment 上报页面
@@ -37,12 +61,12 @@ TrackerHelper.getInstance().init(this, "https://", BuildConfig.DEBUG);
 ```text
 public void onResume() {
     super.onResume();
-    TrackerHelper.onFragmentStart(“页面名称”);
+    AigoAnalysisHelper.getInstance().onFragmentStart(“页面名称”);
 }
 
 public void onPause() {
     super.onPause();
-    TrackerHelper.onFragmentEnd(“页面名称”);
+    AigoAnalysisHelper.getInstance().onFragmentEnd(“页面名称”);
 }
         
 ```
@@ -50,14 +74,15 @@ public void onPause() {
 - 自定义事件上报
 
 ```text
-TrackerHelper.getInstance().with(new CustomEvent("一级事件", "二级事件")
-                    //拓展参数，可不传
-                    .setExtension("key1", "value1")
-                    .setExtension("key2", "value2")
-                    .setExtension("key3", "value3"));
+TrackHelper.track()
+        .custom("一级事件", "二级事件")
+        //拓展参数，可不传
+        .setExtension("key1", "value1")
+        .setExtension("key2", "value2")
+        .with(AigoAnalysisHelper.getInstance().getTracker());
         
 ```
 
-- 上报策略：这里会自动上报 activity 的停留时间，上报策略实时上报，在 WorkManage 里面执行即时上报
+- 上报策略：120s间隔启动上报任务，每次产生的事件缓存在本地
 
 

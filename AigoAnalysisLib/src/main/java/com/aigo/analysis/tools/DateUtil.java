@@ -17,7 +17,7 @@ public class DateUtil {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
             Date date = sdf.parse("1970-01-01 00:00:00");
-            timestamp =  new Date().getTime() - date.getTime();
+            timestamp =  System.currentTimeMillis() - date.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
 

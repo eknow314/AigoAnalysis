@@ -1,20 +1,21 @@
 package com.aigo.analysis;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
+import com.aigo.analysis.tools.GsonHelper;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Description: 发送数据包里面的基本数据
+ * @Description: 发送数据包里面的数据
  * @author: Eknow
  * @date: 2021/5/20 10:22
  */
 public class TrackMe {
 
     private static final int DEFAULT_QUERY_CAPACITY = 14;
-    private final HashMap<String, String> mQueryParams = new HashMap<>(DEFAULT_QUERY_CAPACITY);
+    private final HashMap<String, Object> mQueryParams = new HashMap<>(DEFAULT_QUERY_CAPACITY);
 
     public TrackMe() {
     }
@@ -28,47 +29,73 @@ public class TrackMe {
         return this;
     }
 
-    public synchronized TrackMe set(@NonNull String key, String value) {
+    public synchronized TrackMe set(@NonNull String key, Object value) {
         if (value == null) {
             mQueryParams.remove(key);
-        } else if (value.length() > 0) {
+        } else {
             mQueryParams.remove(key);
             mQueryParams.put(key, value);
         }
         return this;
     }
 
-    @Nullable
-    public synchronized String get(@NonNull String queryParams) {
-        return mQueryParams.get(queryParams);
-    }
-
-    public synchronized TrackMe set(@NonNull BaseParams key, String value) {
+    public synchronized TrackMe set(@NonNull QueryParams key, Object value) {
         set(key.toString(), value);
         return this;
     }
 
-    public synchronized TrackMe set(@NonNull BaseParams key, int value) {
-        set(key, Integer.toString(value));
+    public synchronized TrackMe trySet(@NonNull QueryParams key, Object value) {
+        if (!has(key)) {
+            set(key, value);
+        }
         return this;
     }
 
-    public synchronized TrackMe set(@NonNull BaseParams key, float value) {
-        set(key, Float.toString(value));
-        return this;
+    public synchronized boolean has(@NonNull QueryParams queryParams) {
+        return mQueryParams.containsKey(queryParams.toString());
     }
 
-    public synchronized TrackMe set(@NonNull BaseParams key, long value) {
-        set(key, Long.toString(value));
-        return this;
-    }
-
-    public synchronized Map<String, String> toMap() {
+    public synchronized Map<String, Object> toMap() {
         return new HashMap<>(mQueryParams);
     }
 
-    public synchronized String get(@NonNull BaseParams queryParams) {
+    public synchronized String toJson() {
+        return GsonHelper.object2JsonStr(mQueryParams);
+    }
+
+    public synchronized Object get(@NonNull QueryParams queryParams) {
         return mQueryParams.get(queryParams.toString());
+    }
+
+    public synchronized String getString(@NonNull QueryParams queryParams, String s) {
+        Object obj = get(queryParams);
+        if (obj == null) {
+            return s;
+        } else {
+            return String.valueOf(obj);
+        }
+    }
+
+    public synchronized Integer getInt(@NonNull QueryParams queryParams, int i) {
+        Object obj = get(queryParams);
+        if (obj instanceof Integer) {
+            return (Integer) obj;
+        } else {
+            return i;
+        }
+    }
+
+    public synchronized Long getLong(@NonNull QueryParams queryParams, long l) {
+        Object obj = get(queryParams);
+        if (obj instanceof Long) {
+            return (Long) obj;
+        } else {
+            return l;
+        }
+    }
+
+    public synchronized Object get(@NonNull String queryParams) {
+        return mQueryParams.get(queryParams);
     }
 
     public synchronized boolean isEmpty() {

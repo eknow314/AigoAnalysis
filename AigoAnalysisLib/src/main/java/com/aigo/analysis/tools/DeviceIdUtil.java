@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
 
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.security.MessageDigest;
 import java.util.Locale;
 import java.util.UUID;
@@ -152,8 +150,9 @@ public class DeviceIdUtil {
         String stmp;
         for (int n = 0; n < data.length; n++) {
             stmp = (Integer.toHexString(data[n] & 0xFF));
-            if (stmp.length() == 1)
+            if (stmp.length() == 1) {
                 sb.append("0");
+            }
             sb.append(stmp);
         }
         return sb.toString().toUpperCase(Locale.CHINA);

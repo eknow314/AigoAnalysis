@@ -1,11 +1,11 @@
 package com.aigo.analysis;
 
 /**
- * @Description:
+ * @Description: 查询参数
  * @author: Eknow
- * @date: 2021/5/18 15:41
+ * @date: 2021/8/18 10:09
  */
-public enum BaseParams {
+public enum QueryParams {
 
     /**
      * 目标地址
@@ -21,6 +21,12 @@ public enum BaseParams {
      * 安卓设备的唯一 ID
      */
     DEVICE_ID("device_id"),
+
+    /**
+     * 设备名称
+     */
+    DEVICE("device"),
+    DEVICE_OS("os"),
 
     /**
      * APP 版本号
@@ -55,11 +61,43 @@ public enum BaseParams {
     /**
      * 用户 id
      */
-    USER_ID("user_id");
+    USER_ID("user_id"),
+
+    /**
+     * UTC时间戳
+     */
+    TIME("time"),
+
+    /**
+     * 客户端本地时间戳
+     */
+    LOCAL_TIME("local_time"),
+
+    /**
+     * 页面节点统计上报参数
+     */
+    SECONDS("seconds"),
+    PAGE_NAME("page_name"),
+    BACK_PAGE_NAME("back_page_name"),
+
+    /**
+     * 自定义事件统计上报参数
+     */
+    COUNT("count"),
+    BASE_EVENT("base_event"),
+    EVENT("event"),
+    EXTENSION("extension"),
+    EVENT_NAME("event_name"),
+    EVENT_VALUE("event_value"),
+
+    /**
+     * 批量事件接口参数
+     */
+    BATCH_DETAIL("batch_detail");
 
     private final String value;
 
-    BaseParams(String value) {
+    QueryParams(String value) {
         this.value = value;
     }
 

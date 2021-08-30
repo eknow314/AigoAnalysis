@@ -1,47 +1,53 @@
 package com.aigo.analysis.event;
 
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
+import com.aigo.analysis.QueryParams;
+import com.aigo.analysis.TrackMe;
+import com.aigo.analysis.extra.TrackHelper;
 
-import com.aigo.analysis.AigoAnalysis;
-import com.aigo.analysis.Tracker;
-import com.aigo.analysis.tools.DateUtil;
-import com.aigo.analysis.tools.MapUtil;
-import com.aigo.analysis.work.CustomEventWork;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * @Description: 自定义事件上报
+ * @Description:
  * @author: Eknow
- * @date: 2021/7/8 19:16
+ * @date: 2021/8/26 17:04
  */
-public class CustomEvent extends BaseEvent implements IWorkRequestEvent {
+public class CustomEvent extends BaseEvent {
 
-    private int count = 1;
-    private String baseEvent;
-    private String event;
-    private HashMap<String, Object> extension;
+    private final String mBaseEvent;
+    private final String mEvent;
+    private Long mTime;
+    private Long mLocalTime;
+    private Long mCount = 1L;
+    private Map<String, Object> mExtension;
 
     /**
      *
-     * @param baseEvent 一级事件， 必传
+     * @param baseBuilder
+     * @param baseEvent 一级事件
      * @param event 二级事件
-     * @param count 统计值
      */
-    public CustomEvent(String baseEvent, String event, int count) {
-        this.baseEvent = baseEvent;
-        this.event = event;
-        this.count = count;
+    public CustomEvent(TrackHelper baseBuilder, String baseEvent, String event) {
+        super(baseBuilder);
+        mBaseEvent = baseEvent;
+        mEvent = event;
     }
 
-    /**
-     *
-     * @param baseEvent 一级事件， 必传
-     * @param event 二级事件
-     */
-    public CustomEvent(String baseEvent, String event) {
-        this(baseEvent, event, 1);
+    public CustomEvent time(Long time) {
+        mTime = time;
+        return this;
+    }
+
+    public CustomEvent localTime(Long localTime) {
+        mLocalTime = localTime;
+        return this;
+    }
+
+    public CustomEvent count(Long count) {
+        mCount = count;
+        return this;
     }
 
     /**
@@ -52,27 +58,33 @@ public class CustomEvent extends BaseEvent implements IWorkRequestEvent {
      * @return
      */
     public CustomEvent setExtension(String name, Object value) {
-        if (extension == null) {
-            extension = new HashMap<>();
+        if (mExtension == null) {
+            mExtension = new HashMap<>();
         }
-        extension.put(name, value);
+        mExtension.put(name, value);
         return this;
     }
 
     @Override
-    public OneTimeWorkRequest send(Tracker tracker) {
-        Data data = commonData(tracker)
-                .putLong("time", System.currentTimeMillis())
-                .putLong("local_time", DateUtil.getLocalUnixTimestamp())
-                .putInt("count", count)
-                .putString("base_event", baseEvent)
-                .putString("event", event)
-                .putString("extension", MapUtil.getMapToString(extension))
-                .build();
+    public TrackMe build() {
+        TrackMe trackMe = new TrackMe(getBaseTrackMe())
+                .set(QueryParams.TARGET_API_URL, "v1.0/nodes/event")
+                .set(QueryParams.BASE_EVENT, mBaseEvent)
+                .set(QueryParams.EVENT, mEvent)
+                .set(QueryParams.COUNT, mCount)
+                .set(QueryParams.TIME, mTime)
+                .set(QueryParams.LOCAL_TIME, mLocalTime);
 
-        return new OneTimeWorkRequest.Builder(CustomEventWork.class)
-                .setInputData(data)
-                .addTag(AigoAnalysis.tag(CustomEvent.class))
-                .build();
+        if (mExtension != null && !mExtension.isEmpty()) {
+            List<HashMap<String, Object>> list = new ArrayList<>();
+            for (String key : mExtension.keySet()) {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put(QueryParams.EVENT_NAME.toString(), key);
+                map.put(QueryParams.EVENT_VALUE.toString(), mExtension.get(key));
+                list.add(map);
+            }
+            trackMe.set(QueryParams.EXTENSION, list);
+        }
+        return trackMe;
     }
 }

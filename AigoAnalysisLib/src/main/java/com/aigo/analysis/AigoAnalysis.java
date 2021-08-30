@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import com.aigo.analysis.dispatcher.DefaultDispatcherFactory;
+import com.aigo.analysis.dispatcher.DispatcherFactory;
 import com.aigo.analysis.tools.Checksum;
 import com.aigo.analysis.tools.DeviceHelper;
 
@@ -15,14 +17,11 @@ import java.util.Map;
 import timber.log.Timber;
 
 /**
- * @Description: Aigo 数据分析埋点
+ * @Description:
  * @author: Eknow
- * @date: 2021/5/14 11:20
+ * @date: 2021/8/18 10:28
  */
 public class AigoAnalysis {
-
-    public static final String TEST_SERVER_URL = "https://test.smartapi.aigostar.com:3443/analytics/";
-
     public static final String LOGGER_PREFIX = "AIGO_ANALYSIS:";
     private static final String TAG = AigoAnalysis.tag(AigoAnalysis.class);
     private static final String BASE_PREFERENCE_FILE = "com.aigo.analysis.sdk";
@@ -33,6 +32,8 @@ public class AigoAnalysis {
     private final Map<Tracker, SharedPreferences> mPreferenceMap = new HashMap<>();
     private final Context mContext;
     private final SharedPreferences mBasePreferences;
+    private DispatcherFactory mDispatcherFactory = new DefaultDispatcherFactory();
+    private boolean isInit = false;
 
     public static synchronized AigoAnalysis getInstance(Context context) {
         if (sInstance == null) {
@@ -74,6 +75,22 @@ public class AigoAnalysis {
             }
             return newPrefs;
         }
+    }
+
+    public void setDispatcherFactory(DispatcherFactory dispatcherFactory) {
+        this.mDispatcherFactory = dispatcherFactory;
+    }
+
+    public DispatcherFactory getDispatcherFactory() {
+        return mDispatcherFactory;
+    }
+
+    public boolean isInit() {
+        return isInit;
+    }
+
+    public void setInit(boolean init) {
+        isInit = init;
     }
 
     public DeviceHelper getDeviceHelper() {

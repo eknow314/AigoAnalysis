@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
     tools:context=".BlankActivity">
 
     <Button
@@ -13,4 +14,12 @@
         android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.aigo.analysis.demo.EColorPickView
+        android:id="@+id/color_pick"
+        android:layout_width="295dp"
+        android:layout_height="295dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

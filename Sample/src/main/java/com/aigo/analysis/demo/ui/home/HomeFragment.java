@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.aigo.analysis.TrackerHelper;
+import com.aigo.analysis.AigoAnalysisHelper;
 import com.aigo.analysis.demo.R;
 
 public class HomeFragment extends Fragment {
@@ -37,12 +37,12 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TrackerHelper.onFragmentStart(this.getClass().getSimpleName());
+        AigoAnalysisHelper.getInstance().onFragmentStart(this.getClass().getSimpleName());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        TrackerHelper.onFragmentEnd(this.getClass().getSimpleName());
+        AigoAnalysisHelper.getInstance().onFragmentEnd(this.getClass().getSimpleName());
     }
 }

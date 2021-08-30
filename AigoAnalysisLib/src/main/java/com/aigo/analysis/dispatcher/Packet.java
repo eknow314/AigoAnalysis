@@ -2,7 +2,7 @@ package com.aigo.analysis.dispatcher;
 
 import androidx.annotation.Nullable;
 
-import com.aigo.analysis.BaseParams;
+import com.aigo.analysis.QueryParams;
 
 import org.json.JSONObject;
 
@@ -32,6 +32,16 @@ public class Packet implements Serializable {
     /**
      * POST 请求构造器
      *
+     * @param targetURL
+     * @param postData
+     */
+    public Packet(String targetURL, @Nullable JSONObject postData) {
+        this(targetURL, postData, 1);
+    }
+
+    /**
+     * POST 请求构造器（批量事件上报）
+     *
      * @param targetURL  请求地址
      * @param postData   POST请求数据
      * @param eventCount 事件计数
@@ -39,8 +49,8 @@ public class Packet implements Serializable {
     public Packet(String targetURL, @Nullable JSONObject postData, int eventCount) {
         this.mTargetURL = targetURL;
         this.mPostData = postData;
-        if (mPostData != null && mPostData.has(BaseParams.TARGET_API_URL.toString())) {
-            mPostData.remove(BaseParams.TARGET_API_URL.toString());
+        if (mPostData != null && mPostData.has(QueryParams.TARGET_API_URL.toString())) {
+            mPostData.remove(QueryParams.TARGET_API_URL.toString());
         }
         this.mEventCount = eventCount;
         this.mTimeStamp = System.currentTimeMillis();

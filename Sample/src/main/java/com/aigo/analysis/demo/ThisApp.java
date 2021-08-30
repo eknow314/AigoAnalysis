@@ -2,9 +2,9 @@ package com.aigo.analysis.demo;
 
 import android.app.Application;
 
-import com.aigo.analysis.TrackerHelper;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.commonsdk.UMConfigure;
+import com.aigo.analysis.AigoAnalysisHelper;
+import com.aigo.analysis.BuildConfig;
+import com.hjq.permissions.XXPermissions;
 
 /**
  * @Description:
@@ -13,18 +13,38 @@ import com.umeng.commonsdk.UMConfigure;
  */
 public class ThisApp extends Application {
 
+    private static ThisApp mInstance;
+
+    public static ThisApp getInstance() {
+        return mInstance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        mInstance = this;
+        XXPermissions.setScopedStorage(true);
+//        Timber.plant(new Timber.DebugTree());
+        AigoAnalysisHelper.getInstance()
+                //配置目标地址和站点，安卓客户端填 1
+                .config(this, "https://test.smartapi.aigostar.com:3443/analytics/", 1)
+                //是否打印日志
+                .showLog(BuildConfig.DEBUG)
+                //自动上报 activity
+                .autoActivityPage()
+                //初始化，调用服务端逻辑
+                .init();
+    }
 
-        //友盟海外版
-        UMConfigure.init(this, "60a46cd0c9aacd3bd4db2c99", "GooglePlay", UMConfigure.DEVICE_TYPE_PHONE, "");
-        UMConfigure.setLogEnabled(BuildConfig.DEBUG);
-        //页面自动采集上报
-        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        AigoAnalysisHelper.getInstance().getTracker().onLowMemory();
+    }
 
-
-        //自研数据统计上报
-        TrackerHelper.getInstance().init(this, "https://test.smartapi.aigostar.com:3443/analytics/", true);
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        AigoAnalysisHelper.getInstance().getTracker().onTrimMemory(level);
     }
 }

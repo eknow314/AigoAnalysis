@@ -1,26 +1,53 @@
 package com.aigo.analysis.event;
 
-import androidx.work.Data;
-
-import com.aigo.analysis.BaseParams;
+import com.aigo.analysis.TrackMe;
 import com.aigo.analysis.Tracker;
-import com.aigo.analysis.TrackerHelper;
+import com.aigo.analysis.extra.TrackHelper;
+
+import timber.log.Timber;
 
 /**
- * @Description: 将跟踪器里面设置的公共值传入
+ * @Description: 抽象事件类
  * @author: Eknow
- * @date: 2021/5/18 15:29
+ * @date: 2021/8/26 16:33
  */
-public class BaseEvent {
+public abstract class BaseEvent {
 
-    public Data.Builder commonData(Tracker tracker) {
-        return new Data.Builder()
-                .putString(BaseParams.TARGET_API_URL.toString(), tracker.getApiUrl())
-                .putInt(BaseParams.CLIENT_AUTO_ID.toString(), Integer.parseInt(tracker.getDefaultTrackMe().get(BaseParams.CLIENT_AUTO_ID)))
-                .putString(BaseParams.APP_VERSION.toString(), tracker.getDefaultTrackMe().get(BaseParams.APP_VERSION))
-                .putString(BaseParams.COUNTRY.toString(), tracker.getDefaultTrackMe().get(BaseParams.COUNTRY))
-                .putInt(BaseParams.PLATFORM.toString(), tracker.getSiteId())
-                .putInt(BaseParams.DATA_VERSION.toString(), Integer.parseInt(tracker.getDefaultTrackMe().get(BaseParams.DATA_VERSION)))
-                .putInt(BaseParams.USER_ID.toString(), Integer.parseInt(tracker.getDefaultTrackMe().get(BaseParams.USER_ID)));
+    private final TrackHelper mBaseBuilder;
+
+    public BaseEvent(TrackHelper baseBuilder) {
+        mBaseBuilder = baseBuilder;
     }
+
+    public TrackMe getBaseTrackMe() {
+        return mBaseBuilder.getBaseTrackMe();
+    }
+
+    /**
+     * 构建事件数据包
+     */
+    public abstract TrackMe build();
+
+    public void with(Tracker tracker) {
+        TrackMe trackMe = build();
+        tracker.track(trackMe);
+    }
+
+    /**
+     * 获取任务事件是否被添加进调度器
+     *
+     * @param tracker
+     * @return
+     */
+    public boolean safelyWith(Tracker tracker) {
+        try {
+            TrackMe trackMe = build();
+            tracker.track(trackMe);
+        } catch (IllegalArgumentException e) {
+            Timber.e(e);
+            return false;
+        }
+        return true;
+    }
+
 }

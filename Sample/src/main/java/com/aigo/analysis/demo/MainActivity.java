@@ -6,6 +6,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.aigo.analysis.demo.file.FileTestActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn_2).setOnClickListener(v -> {
-//            TrackerHelper.getInstance().with(new PageEvent());
+            startActivity(new Intent(MainActivity.this, FileTestActivity.class));
         });
 
 
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn_4).setOnClickListener(v -> {
-
+            startActivity(new Intent(MainActivity.this, BlankActivity.class));
         });
 
         findViewById(R.id.btn_5).setOnClickListener(v -> {
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn_6).setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, BlankActivity.class));
+            startActivity(new Intent(MainActivity.this, BlankActivity2.class));
         });
 
     }

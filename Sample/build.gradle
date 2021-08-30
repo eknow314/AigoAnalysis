@@ -52,12 +52,20 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(':AigoAnalysisLib')
-//    implementation 'com.github.eknow314:AigoAnalysis:1.0.4'
+//    implementation 'com.github.eknow314:AigoAnalysis:1.0.11'
 
     implementation 'android.arch.work:work-runtime:1.0.1'
 
 
     implementation fileTree(include:['*.jar'], dir:'libs')
     implementation (name:'umeng-asms-armeabi-v1.2.2', ext:'aar')
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+
+
+    api 'com.github.getActivity:XXPermissions:11.6'
+    implementation 'com.jakewharton.timber:timber:3.1.0'
+
+    implementation 'com.airbnb.android:lottie:3.7.2'
 
 }

@@ -21,8 +21,9 @@ public class MapUtil {
      * @return
      */
     public static String getMapToString(Map<String, Object> map) {
-        if (map == null)
+        if (map == null) {
             return "";
+        }
         Set<String> keySet = map.keySet();
         //将set集合转换为数组
         String[] keyArray = keySet.toArray(new String[keySet.size()]);
@@ -49,8 +50,9 @@ public class MapUtil {
      * @return
      */
     public static Map<String, Object> getStringToMap(String str) {
-        if (TextUtils.isEmpty(str))
+        if (TextUtils.isEmpty(str)) {
             return new HashMap<>();
+        }
         //根据逗号截取字符串数组
         String[] str1 = str.split(",");
         //创建Map对象
