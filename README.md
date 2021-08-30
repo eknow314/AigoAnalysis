@@ -1,6 +1,8 @@
 # AigoAnalysis
 
-AigoStar内部数据统计
+- AigoSmart 内部数据统计
+
+- 上报策略：120s间隔启动上报任务，每次产生的事件缓存在本地
 
 ## 接入指引
 
@@ -30,7 +32,7 @@ dependencies {
 ```text
 AigoAnalysisHelper.getInstance()
                 //配置目标地址和站点，安卓客户端填 1
-                .config(this, "https://test.smartapi.aigostar.com:3443/analytics/", 1)
+                .config(this, "https://xxxxxxxxxxxxxxxx", 1)
                 //是否打印日志
                 .showLog(BuildConfig.DEBUG)
                 //自动上报 activity
@@ -83,6 +85,5 @@ TrackHelper.track()
         
 ```
 
-- 上报策略：120s间隔启动上报任务，每次产生的事件缓存在本地
 
 
