@@ -17,11 +17,6 @@
         android:theme="@style/Theme.AigoAnalysis">
         <activity android:name=".file.FileTestActivity"></activity>
         <activity
-            android:name=".FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/Theme.AigoAnalysis.Fullscreen" />
-        <activity
             android:name=".NavTestActivity"
             android:label="@string/title_activity_nav_test" />
         <activity android:name=".BlankActivity2" />

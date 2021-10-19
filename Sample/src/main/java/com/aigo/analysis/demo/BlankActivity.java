@@ -30,38 +30,7 @@ public class BlankActivity extends AppCompatActivity {
                     .setExtension("n2", "v2")
                     .with(AigoAnalysisHelper.getInstance().getTracker());
 
-//            long ss = System.currentTimeMillis();
-//            System.out.println(ss);
-//
-//            try {
-//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
-//                Date date = sdf.parse("1970-01-01 00:00:00");
-//                System.out.println(new Date().getTime() - date.getTime());
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
 
-
-        });
-
-        EColorPickView color_pick = findViewById(R.id.color_pick);
-        color_pick.setChangedListener(new EColorPickView.OnColorChangedListener() {
-            @Override
-            public void onColorHChanged(int color) {
-                Log.e("color", "" + Integer.toHexString(color));
-                btn.setBackgroundColor(color);
-                btn.setText("" + Integer.toHexString(color));
-            }
-
-            @Override
-            public void onColorSChanged(int color, int s) {
-                btn.setBackgroundColor(color);
-            }
-
-            @Override
-            public void onStopTrackingTouch(int color) {
-
-            }
         });
     }
 
