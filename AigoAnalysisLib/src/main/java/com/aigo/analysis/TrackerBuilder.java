@@ -21,6 +21,11 @@ public class TrackerBuilder {
     private int mSiteId;
 
     /**
+     * 服务器的租户 id
+     */
+    private String mTenantId;
+
+    /**
      * 此跟踪器的唯一名称。用于存储独立于API地址和站点id的跟踪器配置更改。
      */
     private String mTrackerName;
@@ -34,18 +39,20 @@ public class TrackerBuilder {
     /**
      * @param apiUrl
      * @param siteId
+     * @param tenantId
      * @return
      */
-    public static TrackerBuilder createDefault(String apiUrl, int siteId) {
-        return new TrackerBuilder(apiUrl, siteId, "Default Tracker");
+    public static TrackerBuilder createDefault(String apiUrl, Integer siteId, String tenantId) {
+        return new TrackerBuilder(apiUrl, siteId, tenantId, "Default Tracker");
     }
 
     /**
      * @param apiUrl
      * @param siteId
+     * @param tenantId
      * @param trackerName
      */
-    public TrackerBuilder(String apiUrl, int siteId, String trackerName) {
+    public TrackerBuilder(String apiUrl, Integer siteId, String tenantId, String trackerName) {
         try {
             new URL(apiUrl);
         } catch (MalformedURLException e) {
@@ -53,6 +60,7 @@ public class TrackerBuilder {
         }
         mApiUrl = apiUrl;
         mSiteId = siteId;
+        mTenantId = tenantId;
         mTrackerName = trackerName;
     }
 
@@ -62,6 +70,10 @@ public class TrackerBuilder {
 
     public int getSiteId() {
         return mSiteId;
+    }
+
+    public String getTenantId() {
+        return mTenantId;
     }
 
     public TrackerBuilder setTrackerName(String trackerName) {
@@ -100,13 +112,14 @@ public class TrackerBuilder {
 
         TrackerBuilder that = (TrackerBuilder) o;
 
-        return mSiteId == that.mSiteId && mApiUrl.equals(that.mApiUrl) && mTrackerName.equals(that.mTrackerName);
+        return mSiteId == that.mSiteId && mApiUrl.equals(that.mApiUrl) && mTenantId.equals(that.mTenantId) && mTrackerName.equals(that.mTrackerName);
     }
 
     @Override
     public int hashCode() {
         int result = mApiUrl.hashCode();
         result = 31 * result + mSiteId;
+        result = 31 * result + mTenantId.hashCode();
         result = 31 * result + mTrackerName.hashCode();
         return result;
     }

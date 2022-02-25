@@ -3,6 +3,8 @@ package com.aigo.analysis;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.aigo.analysis.extra.InitAigoClient;
 import com.aigo.analysis.extra.TrackHelper;
 import com.aigo.analysis.extra.TrackLifecycle;
@@ -24,6 +26,7 @@ public class AigoAnalysisHelper {
     private Context mContext;
     private String apiUrl;
     private Integer siteId;
+    private String tenantId;
 
     /**
      * 默认单一的跟踪器
@@ -48,7 +51,7 @@ public class AigoAnalysisHelper {
      */
     public synchronized Tracker getTracker() {
         if (tracker == null) {
-            tracker = TrackerBuilder.createDefault(apiUrl, siteId)
+            tracker = TrackerBuilder.createDefault(apiUrl, siteId, tenantId)
                     .build(AigoAnalysis.getInstance(mContext));
         }
         return tracker;
@@ -60,12 +63,14 @@ public class AigoAnalysisHelper {
      * @param context
      * @param apiUrl  服务地址
      * @param siteId  客户端平台站点，安卓 = 1,苹果 = 2, H5 = 3,Pad = 4
+     * @param tenantId 服务端租户id
      * @return
      */
-    public AigoAnalysisHelper config(Context context, String apiUrl, Integer siteId) {
+    public AigoAnalysisHelper config(Context context, @NonNull String apiUrl, @NonNull Integer siteId, @NonNull String tenantId) {
         this.mContext = context;
         this.apiUrl = apiUrl;
         this.siteId = siteId;
+        this.tenantId = tenantId;
         return this;
     }
 

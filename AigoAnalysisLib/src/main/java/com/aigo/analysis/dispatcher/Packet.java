@@ -7,6 +7,7 @@ import com.aigo.analysis.QueryParams;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @Description: 通过Dispatcher发送到后端API的数据
@@ -19,14 +20,15 @@ public class Packet implements Serializable {
     private final JSONObject mPostData;
     private final long mTimeStamp;
     private final int mEventCount;
+    private final Map<String, String> mHeaders;
 
     /**
      * GET 请求构造器
      *
      * @param targetURL 请求地址
      */
-    public Packet(String targetURL) {
-        this(targetURL, null, 1);
+    public Packet(String targetURL, Map<String, String> headers) {
+        this(targetURL, null, headers, 1);
     }
 
     /**
@@ -35,8 +37,8 @@ public class Packet implements Serializable {
      * @param targetURL
      * @param postData
      */
-    public Packet(String targetURL, @Nullable JSONObject postData) {
-        this(targetURL, postData, 1);
+    public Packet(String targetURL, @Nullable JSONObject postData, Map<String, String> headers) {
+        this(targetURL, postData, headers, 1);
     }
 
     /**
@@ -46,9 +48,10 @@ public class Packet implements Serializable {
      * @param postData   POST请求数据
      * @param eventCount 事件计数
      */
-    public Packet(String targetURL, @Nullable JSONObject postData, int eventCount) {
+    public Packet(String targetURL, @Nullable JSONObject postData, Map<String, String> headers, int eventCount) {
         this.mTargetURL = targetURL;
         this.mPostData = postData;
+        this.mHeaders = headers;
         if (mPostData != null && mPostData.has(QueryParams.TARGET_API_URL.toString())) {
             mPostData.remove(QueryParams.TARGET_API_URL.toString());
         }
@@ -62,6 +65,10 @@ public class Packet implements Serializable {
 
     public JSONObject getPostData() {
         return mPostData;
+    }
+
+    public Map<String, String> getHeaders() {
+        return mHeaders;
     }
 
     public long getTimeStamp() {

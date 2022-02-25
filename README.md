@@ -31,8 +31,8 @@ dependencies {
 
 ```text
 AigoAnalysisHelper.getInstance()
-                //配置目标地址和站点，安卓客户端填 1，pad客户端填 4
-                .config(this, "https://xxxxxxxxxxxxxxxx", 1)
+                //配置目标地址、站点、租户id
+                .config(this, "https://xxxxxxxxxxxxxxxx", 1, "租户id")
                 //是否打印日志
                 .showLog(BuildConfig.DEBUG)
                 //自动上报 activity

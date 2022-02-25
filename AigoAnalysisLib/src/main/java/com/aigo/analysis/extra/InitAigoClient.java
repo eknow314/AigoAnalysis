@@ -84,7 +84,7 @@ public class InitAigoClient {
         if (mUserId != 0) {
             url.append("&UserId=").append(mUserId);
         }
-        mPacketSender.send(new Packet(url.toString()), new PacketSenderCallback() {
+        mPacketSender.send(new Packet(url.toString(), tracker.getHeaders()), new PacketSenderCallback() {
             @Override
             public void onSuccess(String json) {
                 //将注册成功获取到的设备 clientAutoId, dataVersion 存储起来
@@ -127,7 +127,7 @@ public class InitAigoClient {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Packet packet = new Packet(tracker.getApiUrl() + "v1.0/clients", jsonObject, 1);
+        Packet packet = new Packet(tracker.getApiUrl() + "v1.0/clients", jsonObject, tracker.getHeaders(), 1);
         mPacketSender.send(packet, new PacketSenderCallback() {
             @Override
             public void onSuccess(String json) {

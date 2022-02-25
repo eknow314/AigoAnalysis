@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import timber.log.Timber;
 
@@ -35,9 +36,11 @@ public class PacketFactory {
     public static final int PAGE_SIZE = 20;
     private final String mApiUrl;
     private TrackMe mTrackMe;
+    private Map<String, String> mHeader;
 
     public PacketFactory(Tracker tracker) {
         this.mApiUrl = tracker.getApiUrl();
+        this.mHeader = tracker.getHeaders();
         this.mTrackMe = tracker.getDefaultTrackMe();
     }
 
@@ -132,7 +135,7 @@ public class PacketFactory {
                 jsonArray.put(event.getJsonQuery());
             }
             params.put(QueryParams.BATCH_DETAIL.toString(), jsonArray);
-            return new Packet(mApiUrl + events.get(0).getFuncApi() + "/batch", params, events.size());
+            return new Packet(mApiUrl + events.get(0).getFuncApi() + "/batch", params, mHeader, events.size());
         } catch (JSONException e) {
             Timber.tag(TAG).w(e, "Cannot create json object:\n%s", TextUtils.join(", ", events));
         }
@@ -155,7 +158,7 @@ public class PacketFactory {
                 String key = it.next();
                 params.put(key, event.getJsonQuery().get(key));
             }
-            return new Packet(mApiUrl + event.getFuncApi(), params);
+            return new Packet(mApiUrl + event.getFuncApi(), params, mHeader);
         } catch (JSONException e) {
             Timber.tag(TAG).w(e, "Cannot create json object:\n%s", event);
         }

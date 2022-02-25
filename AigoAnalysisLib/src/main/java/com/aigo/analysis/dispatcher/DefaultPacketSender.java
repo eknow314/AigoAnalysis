@@ -14,6 +14,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.zip.GZIPOutputStream;
 
 import javax.net.ssl.HostnameVerifier;
@@ -57,6 +60,12 @@ public class DefaultPacketSender implements PacketSender {
 
             urlConnection.setConnectTimeout((int) mTimeout);
             urlConnection.setReadTimeout((int) mTimeout);
+
+            if (packet.getHeaders().size() > 0) {
+                for (String key : packet.getHeaders().keySet()) {
+                    urlConnection.setRequestProperty(key, packet.getHeaders().get(key));
+                }
+            }
 
             if (packet.getPostData() != null) {
                 // POST

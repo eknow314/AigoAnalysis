@@ -8,6 +8,8 @@ import com.aigo.analysis.dispatcher.DispatchMode;
 import com.aigo.analysis.dispatcher.Dispatcher;
 import com.aigo.analysis.tools.DateUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import timber.log.Timber;
@@ -78,6 +80,11 @@ public class Tracker {
     private final int mSiteId;
 
     /**
+     * 服务器租户 id
+     */
+    private final String mTenantId;
+
+    /**
      * 被上报应用的应用基础 URI 地址
      */
     private final String mDefaultApplicationBaseUrl;
@@ -109,6 +116,7 @@ public class Tracker {
         mAigoAnalysis = aigoAnalysis;
         mApiUrl = config.getApiUrl();
         mSiteId = config.getSiteId();
+        mTenantId = config.getTenantId();
         mName = config.getTrackerName();
         mDefaultApplicationBaseUrl = config.getApplicationBaseUrl();
 
@@ -126,6 +134,7 @@ public class Tracker {
         mDefaultTrackMe.set(QueryParams.SYSTEM_VERSION, mAigoAnalysis.getDeviceHelper().getSystemVersion());
         mDefaultTrackMe.set(QueryParams.COUNTRY, mAigoAnalysis.getDeviceHelper().getUserCountry());
         mDefaultTrackMe.set(QueryParams.PLATFORM, mSiteId);
+        mDefaultTrackMe.set(QueryParams.TENANT_ID, mTenantId);
     }
 
     public AigoAnalysis getAigoAnalysis() {
@@ -138,6 +147,16 @@ public class Tracker {
 
     public int getSiteId() {
         return mSiteId;
+    }
+
+    public String getTenantId() {
+        return mTenantId;
+    }
+
+    public Map<String, String> getHeaders() {
+        HashMap<String, String> header = new HashMap<>();
+        header.put("TenantId", mTenantId);
+        return header;
     }
 
     public String getName() {
@@ -378,6 +397,9 @@ public class Tracker {
         if (!mApiUrl.equals(tracker.mApiUrl)) {
             return false;
         }
+        if (!mTenantId.equals(tracker.mTenantId)) {
+            return false;
+        }
         return mName.equals(tracker.mName);
 
     }
@@ -386,6 +408,7 @@ public class Tracker {
     public int hashCode() {
         int result = mApiUrl.hashCode();
         result = 31 * result + mSiteId;
+        result = 31 * result + mTenantId.hashCode();
         result = 31 * result + mName.hashCode();
         return result;
     }

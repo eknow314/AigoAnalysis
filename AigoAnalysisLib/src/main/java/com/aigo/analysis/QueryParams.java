@@ -54,6 +54,11 @@ public enum QueryParams {
     PLATFORM("platform"),
 
     /**
+     * 服务端租户 id
+     */
+    TENANT_ID("tenantId"),
+
+    /**
      * 数据版本，设备从服务端获取到的数据版本标识，每次上报都要传
      */
     DATA_VERSION("data_version"),
